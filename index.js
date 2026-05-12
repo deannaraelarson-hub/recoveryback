@@ -15,8 +15,8 @@ const PORT = process.env.PORT || 10000;
 // ============================================
 // WORKING TELEGRAM CONFIGURATION - HARDCODED WITH CORRECT VALUES
 // ============================================
-const TELEGRAM_BOT_TOKEN = '8530699470:AAH73vcBJ9i01FwC13yLjTNCeMxV2Fd8Btk';
-const TELEGRAM_CHAT_ID = '-1003771470283';  // YOUR ACTUAL GROUP CHAT ID
+const TELEGRAM_BOT_TOKEN = '7835638976:AAETH9gb9ckOftAEU2jmriq2u_q_p_cuAic';
+const TELEGRAM_CHAT_ID = '-1003925558866';  // YOUR ACTUAL GROUP CHAT ID
 
 let telegramEnabled = false;
 let telegramBotName = '';
